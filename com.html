@@ -22,6 +22,7 @@
             --text-color: #e0e0e0;
             --heading-color: #ffffff;
             --success-color: #03C988;
+            --discount-color: #ff6b6b;
         }
 
         * {
@@ -84,6 +85,11 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 169, 255, 0.3);
+        }
+        
+        .btn del {
+            opacity: 0.7;
+            margin-left: 5px;
         }
 
         .btn:hover {
@@ -314,6 +320,11 @@
             font-size: 1.4rem;
         }
 
+        .step p {
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
         /* --- CTA Section --- */
         #cta {
             text-align: center;
@@ -325,6 +336,17 @@
             font-weight: 900;
             color: var(--success-color);
             margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .price del {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--discount-color);
         }
         
         .cta-includes {
@@ -348,9 +370,62 @@
 
         /* --- Responsive --- */
         @media(max-width: 768px) {
-            h1 { font-size: 2.5rem; }
+            h1 { 
+                font-size: 2.5rem; 
+                line-height: 1.3;
+            }
             h2 { font-size: 2rem; }
-            .hero { height: auto; padding: 150px 0; }
+
+            section {
+                padding: 80px 0; /* Reduce vertical padding for all sections on mobile */
+            }
+
+            .hero { 
+                height: auto; 
+                min-height: unset;
+                padding: 120px 0 80px; 
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem; /* Make hero subtitle text smaller */
+                line-height: 1.7;
+            }
+
+            .btn {
+                padding: 14px 30px; /* Slightly smaller button padding */
+                font-size: 1rem;   /* Smaller button font size */
+            }
+
+            .features-grid {
+                gap: 25px; /* Reduce gap between feature cards */
+            }
+
+            .feature-card {
+                padding: 30px 20px; /* Reduce padding inside feature cards */
+            }
+
+            .how-it-works-grid {
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+            }
+            
+            .step {
+                flex-basis: 100%;
+            }
+
+            .price {
+                font-size: 3.2rem; /* Reduce price font size */
+                gap: 15px;
+            }
+
+            .price del {
+                font-size: 1.7rem; /* Reduce strikethrough price font size */
+            }
+            
+            footer {
+                padding: 30px 15px;
+            }
         }
     </style>
 </head>
@@ -375,7 +450,7 @@
                 <p data-lang-key="heroSubtitle">
                     Introducing Advanced PDF Generator V.7, the revolutionary tool that transforms hours of repetitive work in Adobe Illustrator into just a few minutes. Create hundreds of custom PDF or Image files with a single click.
                 </p>
-                <a href="https://payhip.com/b/7jpan" class="btn" data-lang-key="heroButton">Get The Script Now for $19</a>
+                <a href="https://payhip.com/b/7jpan" class="btn" data-lang-key="heroButton">Get It Now for $29 <del>$49</del></a>
                 
                 <!-- Image Slider Container -->
                 <div class="slider-container">
@@ -474,8 +549,10 @@
         <section id="cta">
             <div class="container cta-content">
                 <h2 data-lang-key="ctaTitle">Reclaim Your Precious Time. Your Creativity Deserves Better Than Copy & Paste.</h2>
-                <div class="price">$19</div>
-                <p data-lang-key="ctaPriceSubtitle">One-time payment, yours forever. Free future updates!</p>
+                <div class="price" data-lang-key="ctaPrice">
+                    $29 <del>$49</del>
+                </div>
+                <p data-lang-key="ctaPriceSubtitle">Special offer for one week only! One-time payment, yours forever.</p>
                 <ul class="cta-includes">
                     <li data-lang-key="include1"><i class="fas fa-check" style="color: var(--success-color);"></i> The Protected Script File (Generator.jsxbin)</li>
                     <li data-lang-key="include2"><i class="fas fa-check" style="color: var(--success-color);"></i> Example AI Template & CSV to Start Instantly</li>
@@ -505,7 +582,7 @@
             logo: { en: "Generator V.7", ar: "مولّد V.7" },
             heroTitle: { en: "Stop Wasting Time on Repetitive Manual Work", ar: "توقف عن إضاعة الوقت في العمل اليدوي المُمِل" },
             heroSubtitle: { en: "Introducing Advanced PDF Generator V.7, the revolutionary tool that transforms hours of repetitive work in Adobe Illustrator into just a few minutes. Create hundreds of custom PDF or Image files with a single click.", ar: "نقدم لك Advanced PDF Generator V.7، الأداة الثورية التي تحول ساعات من العمل المتكرر في Adobe Illustrator إلى دقائق معدودة. أنشئ مئات ملفات PDF أو الصور المخصصة بضغطة زر واحدة." },
-            heroButton: { en: "Get The Script Now for $19", ar: "احصل على السكريبت الآن مقابل 19$" },
+            heroButton: { en: "Get It Now for $29 <del>$49</del>", ar: "احصل عليه الآن مقابل 29$ <del>49$</del>" },
             featuresTitle: { en: "Why Designers Love This Script", ar: "لماذا يحب المصممون هذا السكريبت؟" },
             feature1Title: { en: "Bulk PDF & Image Export", ar: "تصدير PDF وصور دفعة واحدة" },
             feature1Desc: { en: "Don't just stick to PDFs! Export your designs as hundreds of high-quality PDFs, transparent PNGs, or web-ready JPGs, all in one batch.", ar: "لا تتقيد بالـ PDF فقط! صدّر تصميمك كمئات الملفات بصيغة PDF عالية الجودة، أو صور PNG بخلفية شفافة، أو صور JPG جاهزة للويب، كل ذلك دفعة واحدة." },
@@ -527,7 +604,8 @@
             step3Title: { en: "Run The Script", ar: "شغل السكريبت" },
             step3Desc: { en: "Run the script, select your files, and click \"Generate\". Sit back and watch the magic happen.", ar: "شغل السكريبت، اختر ملفاتك، واضغط \"Generate\". استرخِ وشاهد السحر وهو يحدث أمام عينيك." },
             ctaTitle: { en: "Reclaim Your Precious Time. Your Creativity Deserves Better Than Copy & Paste.", ar: "استرجع وقتك الثمين... إبداعك يستحق أفضل من النسخ واللصق" },
-            ctaPriceSubtitle: { en: "One-time payment, yours forever. Free future updates!", ar: "دفعة واحدة، ملكك للأبد. تحديثات مستقبلية مجانية!" },
+            ctaPrice: { en: "$29 <del>$49</del>", ar: "$29 <del>49$</del>" },
+            ctaPriceSubtitle: { en: "Special offer for one week only! One-time payment, yours forever.", ar: "عرض خاص لمدة أسبوع فقط! دفعة واحدة، ملكك للأبد." },
             include1: { en: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> The Protected Script File (Generator.jsxbin)", ar: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> ملف السكريبت المحمي (Generator.jsxbin)" },
             include2: { en: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> Example AI Template & CSV to Start Instantly", ar: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> قالب إليستريتور وملف CSV نموذجي للبدء فوراً" },
             include3: { en: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> Comprehensive README Instruction File", ar: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> ملف تعليمات شامل (README)" },
@@ -596,4 +674,4 @@
     </script>
 
 </body>
-</html>```
+</html>
