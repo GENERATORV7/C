@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced PDF Generator V.7 - The Ultimate Illustrator Automation Script</title>
+    
+    <!-- Google Fonts: Poppins for English, Tajawal for Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        /* --- General Styles --- */
+        :root {
+            --primary-color: #00A9FF;
+            --dark-bg: #1a1a2e;
+            --card-bg: #16213E;
+            --text-color: #e0e0e0;
+            --heading-color: #ffffff;
+            --success-color: #03C988;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', 'Tajawal', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        h1 { font-size: 3rem; font-weight: 900; }
+        h2 { font-size: 2.5rem; text-align: center; margin-bottom: 60px; position: relative; }
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        section {
+            padding: 100px 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--primary-color), #0077b6);
+            color: #fff;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 169, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 169, 255, 0.5);
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(22, 33, 62, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 169, 255, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--heading-color);
+        }
+        
+        .lang-switcher a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-switcher a.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        
+        /* --- Header / Hero Section --- */
+        .hero {
+            padding-top: 100px; /* To offset nav */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-content {
+            animation: fadeIn 1s ease-in-out;
+            width: 100%;
+        }
+
+        .hero-content h1 {
+            background: -webkit-linear-gradient(45deg, var(--primary-color), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+        
+        /* --- Slider Styles --- */
+        .slider-container {
+            max-width: 1000px;
+            position: relative;
+            margin: 50px auto;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .slide {
+            display: none;
+        }
+
+        .slide img {
+            width: 100%;
+            vertical-align: middle;
+            border-radius: 8px;
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        html[dir="ltr"] .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        html[dir="rtl"] .next {
+            left: 0;
+            border-radius: 0 3px 3px 0;
+        }
+        html[dir="ltr"] .prev {
+            left: 0;
+        }
+         html[dir="rtl"] .prev {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 169, 255, 0.8);
+        }
+        
+        .dots-container {
+            text-align: center;
+            padding: 15px;
+        }
+
+        .dot {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 5px;
+            background-color: #3b3b5a;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .dot.active, .dot:hover {
+            background-color: var(--primary-color);
+        }
+
+        .fade {
+            animation-name: fade;
+            animation-duration: 0.8s;
+        }
+
+        @keyframes fade {
+            from { opacity: 0.4; }
+            to { opacity: 1; }
+        }
+
+        /* --- Features Section --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            background-color: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(0, 169, 255, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+        }
+
+        /* --- How It Works Section --- */
+        #how-it-works {
+            background-color: var(--card-bg);
+        }
+        
+        .how-it-works-grid {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .step {
+            flex-basis: 30%;
+            min-width: 250px;
+        }
+
+        .step .icon-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--dark-bg);
+            border: 3px solid var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            font-weight: 900;
+        }
+
+        .step h3 {
+            font-size: 1.4rem;
+        }
+
+        /* --- CTA Section --- */
+        #cta {
+            text-align: center;
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--dark-bg) 100%);
+        }
+        
+        .price {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--success-color);
+            margin: 30px 0;
+        }
+        
+        .cta-includes {
+            list-style: none;
+            margin: 30px 0 40px;
+            display: inline-block;
+            text-align: initial; /* for RTL/LTR consistency */
+        }
+        
+        .cta-includes li {
+            margin-bottom: 10px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: var(--card-bg);
+            border-top: 1px solid rgba(0, 169, 255, 0.2);
+        }
+
+        /* --- Responsive --- */
+        @media(max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .hero { height: auto; padding: 150px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="container nav-container">
+            <div class="logo" data-lang-key="logo">Generator V.7</div>
+            <div class="lang-switcher">
+                <a href="#" id="lang-en" class="active" onclick="switchLanguage('en')">English</a>
+                <a href="#" id="lang-ar" onclick="switchLanguage('ar')">العربية</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 data-lang-key="heroTitle">Stop Wasting Time on Repetitive Manual Work</h1>
+                <p data-lang-key="heroSubtitle">
+                    Introducing Advanced PDF Generator V.7, the revolutionary tool that transforms hours of repetitive work in Adobe Illustrator into just a few minutes. Create hundreds of custom PDF or Image files with a single click.
+                </p>
+                <a href="#cta" class="btn" data-lang-key="heroButton">Get The Script Now for $19</a>
+                
+                <!-- Image Slider Container -->
+                <div class="slider-container">
+                    
+                    <div class="slide fade">
+                        <img src="https://i.ibb.co/G3HN8nQm/1.png" alt="Step 1: Import Data">
+                    </div>
+                    
+                    <div class="slide fade">
+                        <img src="https://i.ibb.co/prPBs7f7/2.png" alt="Step 2: Options">
+                    </div>
+                    
+                    <div class="slide fade">
+                        <img src="https://i.ibb.co/99wybkBS/3.png" alt="Step 3: File Naming">
+                    </div>
+                    
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+                </div>
+                <div class="dots-container">
+                    <span class="dot" onclick="currentSlide(1)"></span> 
+                    <span class="dot" onclick="currentSlide(2)"></span> 
+                    <span class="dot" onclick="currentSlide(3)"></span> 
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- FEATURES SECTION (Content remains the same) -->
+        <section id="features">
+            <div class="container">
+                <h2 data-lang-key="featuresTitle">Why Designers Love This Script</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-file-export"></i>
+                        <h3 data-lang-key="feature1Title">Bulk PDF & Image Export</h3>
+                        <p data-lang-key="feature1Desc">Don't just stick to PDFs! Export your designs as hundreds of high-quality PDFs, transparent PNGs, or web-ready JPGs, all in one batch.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-sync-alt"></i>
+                        <h3 data-lang-key="feature2Title">Dynamic Data Replacement</h3>
+                        <p data-lang-key="feature2Desc">The script automatically replaces text and images in your design from a simple CSV data file, perfect for certificates, business cards, or social media posts.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-font"></i>
+                        <h3 data-lang-key="feature3Title">Advanced Text Formatting</h3>
+                        <p data-lang-key="feature3Desc">Maintain brand consistency with ease. Automatically apply formats like Title Case, UPPERCASE, or lowercase to any text column on the fly.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-file-signature"></i>
+                        <h3 data-lang-key="feature4Title">Intelligent File Naming</h3>
+                        <p data-lang-key="feature4Desc">Use data from your CSV to automatically generate unique and organized filenames. E.g., `Certificate-John-Doe.pdf` instead of `Untitled-1.pdf`.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-mouse-pointer"></i>
+                        <h3 data-lang-key="feature5Title">Easy & Clean UI</h3>
+                        <p data-lang-key="feature5Desc">No coding experience needed. The script's interface is designed with clear, step-by-step instructions to guide you through the process effortlessly.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-check-circle"></i>
+                        <h3 data-lang-key="feature6Title">High Compatibility</h3>
+                        <p data-lang-key="feature6Desc">The script works flawlessly on both Windows and macOS, and is compatible with Adobe Illustrator CC 2021 and newer versions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS SECTION (Content remains the same) -->
+        <section id="how-it-works">
+            <div class="container">
+                <h2 data-lang-key="howTitle">How It Works? In 3 Simple Steps</h2>
+                <div class="how-it-works-grid">
+                    <div class="step">
+                        <div class="icon-circle">1</div>
+                        <h3 data-lang-key="step1Title">Prepare Template</h3>
+                        <p data-lang-key="step1Desc">Design your file in Illustrator once. Use simple placeholders like `{{FullName}}` for text and images.</p>
+                    </div>
+                    <div class="step">
+                        <div class="icon-circle">2</div>
+                        <h3 data-lang-key="step2Title">Prepare Data</h3>
+                        <p data-lang-key="step2Desc">Put all your data (names, titles, image paths) into a simple CSV file using Excel or Google Sheets.</p>
+                    </div>
+                    <div class="step">
+                        <div class="icon-circle">3</div>
+                        <h3 data-lang-key="step3Title">Run The Script</h3>
+                        <p data-lang-key="step3Desc">Run the script, select your files, and click "Generate". Sit back and watch the magic happen.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CALL TO ACTION SECTION (Content remains the same) -->
+        <section id="cta">
+            <div class="container cta-content">
+                <h2 data-lang-key="ctaTitle">Reclaim Your Precious Time. Your Creativity Deserves Better Than Copy & Paste.</h2>
+                <div class="price">$19</div>
+                <p data-lang-key="ctaPriceSubtitle">One-time payment, yours forever. Free future updates!</p>
+                <ul class="cta-includes">
+                    <li data-lang-key="include1"><i class="fas fa-check" style="color: var(--success-color);"></i> The Protected Script File (Generator.jsxbin)</li>
+                    <li data-lang-key="include2"><i class="fas fa-check" style="color: var(--success-color);"></i> Example AI Template & CSV to Start Instantly</li>
+                    <li data-lang-key="include3"><i class="fas fa-check" style="color: var(--success-color);"></i> Comprehensive README Instruction File</li>
+                    <li data-lang-key="include4"><i class="fas fa-check" style="color: var(--success-color);"></i> Direct Technical Support from the Developer</li>
+                </ul>
+                <!-- ***** IMPORTANT: Replace "#" with your Gumroad (or other platform) purchase link ***** -->
+                <a href="#" class="btn" data-lang-key="ctaButton">I Want to Save Time! Buy The Script Now</a>
+                <p style="margin-top: 15px; opacity: 0.7;" data-lang-key="ctaSecure">🔒 Secure Payment & Instant Download</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER (Content remains the same) -->
+    <footer>
+        <div class="container">
+            <p data-lang-key="footerCopyright">
+                Copyright © 2025 - Advanced PDF Generator V.7 <br>
+                A Script Developed by Dr. Ahmed Hany
+            </p>
+            <p data-lang-key="footerSupport">For technical support and inquiries: WhatsApp +201019249195</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT FOR LANGUAGE SWITCHING -->
+    <script>
+        const translations = {
+            logo: { en: "Generator V.7", ar: "مولّد V.7" },
+            heroTitle: { en: "Stop Wasting Time on Repetitive Manual Work", ar: "توقف عن إضاعة الوقت في العمل اليدوي المُمِل" },
+            heroSubtitle: { en: "Introducing Advanced PDF Generator V.7, the revolutionary tool that transforms hours of repetitive work in Adobe Illustrator into just a few minutes. Create hundreds of custom PDF or Image files with a single click.", ar: "نقدم لك Advanced PDF Generator V.7، الأداة الثورية التي تحول ساعات من العمل المتكرر في Adobe Illustrator إلى دقائق معدودة. أنشئ مئات ملفات PDF أو الصور المخصصة بضغطة زر واحدة." },
+            heroButton: { en: "Get The Script Now for $19", ar: "احصل على السكريبت الآن مقابل 19$" },
+            featuresTitle: { en: "Why Designers Love This Script", ar: "لماذا يحب المصممون هذا السكريبت؟" },
+            feature1Title: { en: "Bulk PDF & Image Export", ar: "تصدير PDF وصور دفعة واحدة" },
+            feature1Desc: { en: "Don't just stick to PDFs! Export your designs as hundreds of high-quality PDFs, transparent PNGs, or web-ready JPGs, all in one batch.", ar: "لا تتقيد بالـ PDF فقط! صدّر تصميمك كمئات الملفات بصيغة PDF عالية الجودة، أو صور PNG بخلفية شفافة، أو صور JPG جاهزة للويب، كل ذلك دفعة واحدة." },
+            feature2Title: { en: "Dynamic Data Replacement", ar: "استبدال ديناميكي للبيانات" },
+            feature2Desc: { en: "The script automatically replaces text and images in your design from a simple CSV data file, perfect for certificates, business cards, or social media posts.", ar: "يقوم السكريبت باستبدال النصوص والصور في تصميمك تلقائياً من ملف بيانات CSV بسيط، مما يفتح الباب لإنشاء شهادات، بطاقات عمل، أو منشورات سوشيال ميديا مخصصة." },
+            feature3Title: { en: "Advanced Text Formatting", ar: "تنسيق نصوص متقدم" },
+            feature3Desc: { en: "Maintain brand consistency with ease. Automatically apply formats like Title Case, UPPERCASE, or lowercase to any text column on the fly.", ar: "حافظ على تناسق علامتك التجارية بسهولة. يمكنك تطبيق تنسيقات مثل حالة العنوان (Title Case)، أو الأحرف الكبيرة (UPPERCASE)، أو الصغيرة (lowercase) على أي عمود نصي." },
+            feature4Title: { en: "Intelligent File Naming", ar: "تسمية ملفات ذكية" },
+            feature4Desc: { en: "Use data from your CSV to automatically generate unique and organized filenames. E.g., `Certificate-John-Doe.pdf` instead of `Untitled-1.pdf`.", ar: "استخدم البيانات من ملفك لإنشاء أسماء ملفات فريدة ومنظمة تلقائياً. مثال: `شهادة-أحمد-خالد.pdf` بدلاً من `Untitled-1.pdf`." },
+            feature5Title: { en: "Easy & Clean UI", ar: "واجهة سهلة وواضحة" },
+            feature5Desc: { en: "No coding experience needed. The script's interface is designed with clear, step-by-step instructions to guide you through the process effortlessly.", ar: "لا حاجة لأي خبرة برمجية. واجهة السكريبت مصممة بنظام الخطوات الواضحة لترشدك خلال العملية بأكملها بسهولة وسلاسة." },
+            feature6Title: { en: "High Compatibility", ar: "توافقية عالية" },
+            feature6Desc: { en: "The script works flawlessly on both Windows and macOS, and is compatible with Adobe Illustrator CC 2021 and newer versions.", ar: "يعمل السكريبت بكفاءة على نظامي التشغيل Windows و macOS، ويتوافق مع إصدارات Adobe Illustrator CC 2021 فما فوق." },
+            howTitle: { en: "How It Works? In 3 Simple Steps", ar: "كيف يعمل؟ في 3 خطوات بسيطة" },
+            step1Title: { en: "Prepare Template", ar: "جهز القالب" },
+            step1Desc: { en: "Design your file in Illustrator once. Use simple placeholders like `{{FullName}}` for text and images.", ar: "صمم ملفك في الإليستريتور مرة واحدة، واستخدم عناصر نائبة بسيطة مثل `{{FullName}}` للنصوص والصور." },
+            step2Title: { en: "Prepare Data", ar: "جهز البيانات" },
+            step2Desc: { en: "Put all your data (names, titles, image paths) into a simple CSV file using Excel or Google Sheets.", ar: "ضع كل بياناتك (الأسماء، المناصب، مسارات الصور) في ملف CSV بسيط باستخدام Excel أو Google Sheets." },
+            step3Title: { en: "Run The Script", ar: "شغل السكريبت" },
+            step3Desc: { en: "Run the script, select your files, and click \"Generate\". Sit back and watch the magic happen.", ar: "شغل السكريبت، اختر ملفاتك، واضغط \"Generate\". استرخِ وشاهد السحر وهو يحدث أمام عينيك." },
+            ctaTitle: { en: "Reclaim Your Precious Time. Your Creativity Deserves Better Than Copy & Paste.", ar: "استرجع وقتك الثمين... إبداعك يستحق أفضل من النسخ واللصق" },
+            ctaPriceSubtitle: { en: "One-time payment, yours forever. Free future updates!", ar: "دفعة واحدة، ملكك للأبد. تحديثات مستقبلية مجانية!" },
+            include1: { en: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> The Protected Script File (Generator.jsxbin)", ar: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> ملف السكريبت المحمي (Generator.jsxbin)" },
+            include2: { en: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> Example AI Template & CSV to Start Instantly", ar: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> قالب إليستريتور وملف CSV نموذجي للبدء فوراً" },
+            include3: { en: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> Comprehensive README Instruction File", ar: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> ملف تعليمات شامل (README)" },
+            include4: { en: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> Direct Technical Support from the Developer", ar: "<i class=\"fas fa-check\" style=\"color: var(--success-color);\"></i> دعم فني مباشر من المطور" },
+            ctaButton: { en: "I Want to Save Time! Buy The Script Now", ar: "أريد توفير وقتي! اشترِ السكريبت الآن" },
+            ctaSecure: { en: "🔒 Secure Payment & Instant Download", ar: "🔒 دفع آمن وتحميل فوري" },
+            footerCopyright: { en: "Copyright © 2025 - Advanced PDF Generator V.7 <br> A Script Developed by Dr. Ahmed Hany", ar: "حقوق النشر © 2025 - Advanced PDF Generator V.7 <br> سكريبت تم تطويره بواسطة د. أحمد هاني" },
+            footerSupport: { en: "For technical support and inquiries: WhatsApp +201019249195", ar: "للدعم الفني والاستفسارات: واتساب +201019249195" }
+        };
+
+        const langEn = document.getElementById('lang-en');
+        const langAr = document.getElementById('lang-ar');
+
+        function switchLanguage(lang) {
+            // Set direction and lang attributes
+            if (lang === 'ar') {
+                document.documentElement.lang = 'ar';
+                document.documentElement.dir = 'rtl';
+                langAr.classList.add('active');
+                langEn.classList.remove('active');
+            } else {
+                document.documentElement.lang = 'en';
+                document.documentElement.dir = 'ltr';
+                langEn.classList.add('active');
+                langAr.classList.remove('active');
+            }
+
+            // Translate all elements with data-lang-key
+            document.querySelectorAll('[data-lang-key]').forEach(element => {
+                const key = element.dataset.langKey;
+                if (translations[key] && translations[key][lang]) {
+                    element.innerHTML = translations[key][lang];
+                }
+            });
+        }
+    </script>
+    
+    <!-- SLIDER SCRIPT -->
+    <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("slide");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+    </script>
+
+</body>
+</html>
